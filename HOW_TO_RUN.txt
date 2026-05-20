@@ -1,0 +1,88 @@
+AIKU WEBSITE - HOW TO RUN
+=========================
+
+REQUIREMENTS
+------------
+- Node.js v18 or higher
+- npm (comes with Node.js)
+
+
+INSTALL DEPENDENCIES (first time only)
+---------------------------------------
+  npm install
+
+
+DEVELOPMENT (local)
+--------------------
+  npm run dev
+
+  Opens at: http://localhost:5173
+  Hot reload is enabled — changes reflect instantly in the browser.
+
+
+BUILD FOR PRODUCTION
+---------------------
+  npm run build
+
+  Output goes to the /dist folder.
+
+
+PREVIEW PRODUCTION BUILD LOCALLY
+----------------------------------
+  npm run preview
+
+  Opens at: http://localhost:4173
+
+
+DEPLOY TO NETLIFY (ikom2018.netlify.app)
+-----------------------------------------
+  1. Make sure you're logged in:
+       npx netlify-cli@latest login
+
+  2. Build and deploy to production:
+       npm run build
+       npx netlify-cli@latest deploy --dir=dist --prod --site 0ae50dee-8cec-4e68-9d64-354e68e9e398
+
+
+PROJECT STRUCTURE
+------------------
+  src/
+    components/
+      LandingPage.jsx     - Homepage
+      Navbar.jsx          - Navigation bar
+      Directory.jsx       - Alumni directory
+      ProfilePage.jsx     - Individual alumni profile
+      RegisterForm.jsx    - Registration form
+      OrgPage.jsx         - Organization page
+      CecepPage.jsx       - Candidacy page (Calon Ketua AIKU)
+    data/
+      alumni.js           - Alumni data
+    lib/
+      sheets.js           - Google Sheets integration
+      form.js             - Form utilities
+    App.jsx               - Routes configuration
+    main.jsx              - Entry point
+    index.css             - Global styles (Tailwind)
+  public/                 - Static assets (images, etc.)
+  dist/                   - Production build output (git-ignored)
+
+
+ROUTES
+-------
+  /                  - Homepage
+  /directory         - Alumni directory
+  /organisasi        - Organization info
+  /calon-ketua       - Cecep's candidacy page
+  /register          - Register form
+  /profile/:id       - Alumni profile
+
+
+TECH STACK
+-----------
+  - React 19
+  - Vite 6
+  - Tailwind CSS 4
+  - React Router v7
+  - Lucide React (icons)
+  - Netlify (hosting)
+  - GitHub: https://github.com/rafishalahudin/ikomupi2018
