@@ -6,6 +6,7 @@ const links = [
   { to: "/", label: "Home" },
   { to: "/directory", label: "Direktori" },
   { to: "/organisasi", label: "Organisasi" },
+  { to: "/calon-ketua", label: "Calon Ketua" },
   { to: "/register", label: "Daftar" },
 ];
 
