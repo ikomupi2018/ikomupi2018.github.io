@@ -153,6 +153,7 @@ const anggaranRumahTangga = [
           "Menjaga nama baik organisasi dan almamater.",
           "Menaati Anggaran Dasar, Anggaran Rumah Tangga, dan ketetapan organisasi.",
           "Berpartisipasi aktif sesuai kemampuan masing-masing.",
+          "Menjaga kerahasiaan data pribadi anggota lain yang diperoleh dalam kapasitas organisasi dan tidak menggunakannya untuk kepentingan di luar organisasi.",
         ],
       },
     ],
@@ -166,7 +167,11 @@ const anggaranRumahTangga = [
       { no: "Pasal 5", judul: "Sekretaris", ayat: ["Mengelola administrasi, surat-menyurat, notulensi, dan arsip organisasi."] },
       { no: "Pasal 6", judul: "Bendahara", ayat: ["Mengelola keuangan secara transparan dan menyusun laporan keuangan berkala."] },
       { no: "Pasal 7", judul: "Koordinator Bidang", ayat: ["Merencanakan dan melaksanakan program kerja sesuai bidang masing-masing."] },
-      { no: "Pasal 8", judul: "Perwakilan Angkatan", ayat: ["Menjadi penghubung antara pengurus inti dengan anggota di angkatannya serta menjaga pemutakhiran data."] },
+      { no: "Pasal 8", judul: "Perwakilan Angkatan", ayat: [
+        "Menjadi penghubung antara pengurus inti dengan anggota di angkatannya serta menjaga pemutakhiran data.",
+        "PIC Angkatan ditunjuk oleh Bidang Hubungan Alumni & Antar-Angkatan atas persetujuan Ketua Umum, dengan masa tugas mengikuti periode kepengurusan.",
+        "PIC Angkatan dapat diganti apabila tidak aktif selama 3 (tiga) bulan berturut-turut atau mengundurkan diri, melalui penunjukan pengganti oleh mekanisme yang sama.",
+      ]},
     ],
   },
   {
@@ -193,6 +198,15 @@ const anggaranRumahTangga = [
           "Proses serah terima didokumentasikan dalam berita acara yang ditandatangani kedua pihak.",
         ],
       },
+      {
+        no: "Pasal 13",
+        judul: "Rangkap Jabatan",
+        ayat: [
+          "Seorang anggota tidak dapat merangkap dua atau lebih jabatan dalam Pengurus Inti secara bersamaan.",
+          "Koordinator Bidang tidak dapat merangkap jabatan dalam Pengurus Inti.",
+          "Pengecualian dapat diberikan secara sementara oleh Rapat Pengurus dalam kondisi kekosongan jabatan, hingga pengganti definitif ditetapkan.",
+        ],
+      },
     ],
   },
   {
@@ -200,16 +214,16 @@ const anggaranRumahTangga = [
     judul: "Pemilihan Ketua Umum",
     pasal: [
       {
-        no: "Pasal 13",
+        no: "Pasal 15",
         judul: "Penjaringan Calon",
         ayat: [
           "Posisi Ketua Umum dibuka secara terbuka bagi seluruh anggota dari semua angkatan, dan diumumkan melalui kanal resmi organisasi.",
           "Setiap anggota yang bersedia maju mengajukan pernyataan kesediaan beserta rancangan tim inti dalam masa penjaringan yang ditetapkan panitia, sekurang-kurangnya 2 (dua) minggu.",
-          "Calon Ketua Umum adalah anggota yang menyatakan kesediaan secara tertulis dan memenuhi kriteria yang ditetapkan.",
+          "Calon Ketua Umum wajib memenuhi kriteria: merupakan alumni aktif Ilmu Komunikasi UPI, bersedia menjalankan masa bakti penuh 3 tahun, tidak sedang menjabat posisi struktural di partai politik, dan sanggup hadir aktif dalam kegiatan organisasi.",
         ],
       },
       {
-        no: "Pasal 14",
+        no: "Pasal 16",
         judul: "Penetapan Ketua Umum",
         ayat: [
           "Penetapan Ketua Umum dilakukan dalam Musyawarah Besar.",
@@ -219,7 +233,7 @@ const anggaranRumahTangga = [
         ],
       },
       {
-        no: "Pasal 15",
+        no: "Pasal 17",
         judul: "Kuorum dan Keabsahan",
         ayat: [
           "Musyawarah Besar dinyatakan sah apabila dihadiri oleh perwakilan dari sekurang-kurangnya separuh jumlah angkatan yang ada.",
@@ -233,11 +247,12 @@ const anggaranRumahTangga = [
     judul: "Rapat-Rapat",
     pasal: [
       {
-        no: "Pasal 16",
+        no: "Pasal 18",
         ayat: [
           "Musyawarah Besar diselenggarakan sekali dalam satu periode kepengurusan.",
           "Rapat Kerja diselenggarakan untuk menyusun program kerja tahunan.",
           "Rapat Pengurus diselenggarakan sesuai kebutuhan organisasi dan dinyatakan sah apabila dihadiri lebih dari separuh pengurus inti.",
+          "Pengambilan keputusan dalam Rapat Pengurus dilakukan melalui musyawarah mufakat; apabila tidak tercapai, dilakukan pemungutan suara dengan suara terbanyak, dan Ketua Umum memiliki suara penentu apabila terjadi hasil imbang.",
           "Setiap rapat wajib menghasilkan notulensi yang didokumentasikan.",
         ],
       },
@@ -248,11 +263,12 @@ const anggaranRumahTangga = [
     judul: "Keuangan",
     pasal: [
       {
-        no: "Pasal 17",
+        no: "Pasal 19",
         ayat: [
           "AIKU tidak memiliki iuran rutin; tidak ada kewajiban finansial berkala bagi anggota.",
           "Donasi dibuka secara temporer hanya untuk acara tertentu yang membutuhkan biaya operasional, dan ditutup setelah acara berlangsung.",
           "Setiap penerimaan dan pengeluaran dalam penyelenggaraan acara wajib dicatat, didokumentasikan, dan dilaporkan kepada anggota setelah acara selesai.",
+          "Apabila terdapat sisa dana setelah acara selesai, sisa tersebut dicatat sebagai kas organisasi untuk keperluan operasional berikutnya dan dilaporkan kepada seluruh anggota.",
           "Sebelum dipublikasikan, laporan keuangan diverifikasi oleh satu anggota pengurus di luar Bendahara yang ditunjuk dalam Rapat Pengurus.",
         ],
       },
@@ -262,14 +278,14 @@ const anggaranRumahTangga = [
     bab: "BAB VII",
     judul: "Atribut Organisasi",
     pasal: [
-      { no: "Pasal 18", ayat: ["AIKU memiliki atribut berupa logo dan identitas visual yang ditetapkan oleh pengurus dan disahkan dalam Musyawarah Besar."] },
+      { no: "Pasal 20", ayat: ["AIKU memiliki atribut berupa logo dan identitas visual yang ditetapkan oleh pengurus dan disahkan dalam Musyawarah Besar."] },
     ],
   },
   {
     bab: "BAB VIII",
     judul: "Penutup",
     pasal: [
-      { no: "Pasal 19", ayat: ["Hal-hal yang belum diatur dalam Anggaran Rumah Tangga ini akan ditetapkan kemudian melalui ketetapan organisasi."] },
+      { no: "Pasal 21", ayat: ["Hal-hal yang belum diatur dalam Anggaran Rumah Tangga ini akan ditetapkan kemudian melalui ketetapan organisasi."] },
     ],
   },
 ];
@@ -332,7 +348,7 @@ const struktur = {
   ],
   bidang: [
     { nama: "Program & Acara", anggota: ["Fathia Islamiyatul S", "Reva Girvan"], icon: Users },
-    { nama: "Pengembangan Profesional & Karir", anggota: ["Wanda Putri R", "Dinda DNA", "Renanda Dwina P", "Fachira Anjani"], icon: Briefcase },
+    { nama: "Pengembangan Profesional & Karir", anggota: ["Wanda Putri R", "Dinda DNA", "Renanda Dwina P", "Fachira Anjani", "Gesha Fadhilah R"], icon: Briefcase },
     { nama: "Hubungan Alumni & Antar-Angkatan", anggota: ["Rizki Dwi P", "Regine Deanaendra"], icon: Network },
     { nama: "Komunikasi & Media", anggota: ["Rafi Shalahudin", "Marcellodiansyah"], icon: Megaphone },
   ],
