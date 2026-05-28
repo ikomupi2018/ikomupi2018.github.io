@@ -371,49 +371,49 @@ function GbhoDoc() {
 
 function StrukturDoc() {
   return (
-    <div className="space-y-10">
+    <div className="space-y-4">
       {/* Pembina */}
-      <div className="rounded-3xl border border-white/8 bg-white/[0.02] p-7 text-center">
+      <div className="rounded-2xl border border-white/8 bg-white/[0.02] px-6 py-4 text-center">
         <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-stone-500">Lapisan Penasihat</span>
-        <h3 className="mt-2 font-display text-2xl font-medium text-[#f5efe6]">{struktur.pembina.label}</h3>
-        <p className="mt-2 text-sm text-stone-400">{struktur.pembina.desc}</p>
+        <h3 className="mt-1 font-display text-xl font-medium text-[#f5efe6]">{struktur.pembina.label}</h3>
+        <p className="mt-1 text-sm text-stone-400">{struktur.pembina.desc}</p>
       </div>
 
-      <div className="flex justify-center"><div className="h-8 w-px bg-amber-500/30" /></div>
+      <div className="flex justify-center"><div className="h-4 w-px bg-amber-500/30" /></div>
 
       {/* Pengurus Inti */}
       <div>
-        <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500">Pengurus Inti (Harian)</p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500">Pengurus Inti (Harian)</p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {struktur.inti.map((m) => (
-            <div key={m.jabatan} className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.05] p-5 text-center">
-              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400">
-                <m.icon className="h-5 w-5" />
+            <div key={m.jabatan} className="rounded-xl border border-amber-500/20 bg-amber-500/[0.05] p-4 text-center">
+              <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/15 text-amber-400">
+                <m.icon className="h-4 w-4" />
               </div>
               <p className="text-xs font-semibold uppercase tracking-wider text-amber-400/80">{m.jabatan}</p>
-              <p className="mt-1 font-display text-lg text-[#f5efe6]">{m.nama}</p>
+              <p className="mt-1 font-display text-base text-[#f5efe6]">{m.nama}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex justify-center"><div className="h-8 w-px bg-amber-500/30" /></div>
+      <div className="flex justify-center"><div className="h-4 w-px bg-amber-500/30" /></div>
 
       {/* Koordinator Bidang */}
       <div>
-        <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500">Koordinator Bidang</p>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500">Koordinator Bidang</p>
+        <div className="grid gap-3 sm:grid-cols-2">
           {struktur.bidang.map((b, i) => (
-            <div key={i} className="rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+            <div key={i} className="rounded-xl border border-white/8 bg-white/[0.02] p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
-                  <b.icon className="h-4 w-4" />
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+                  <b.icon className="h-3.5 w-3.5" />
                 </div>
-                <h4 className="font-display text-lg text-[#f5efe6]">{b.nama}</h4>
+                <h4 className="font-display text-base text-[#f5efe6]">{b.nama}</h4>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2 pl-12">
+              <div className="mt-2 flex flex-wrap gap-1.5 pl-11">
                 {b.anggota.map((a) => (
-                  <span key={a} className="rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-stone-300 ring-1 ring-white/10">{a}</span>
+                  <span key={a} className="rounded-full bg-white/5 px-2.5 py-0.5 text-xs font-medium text-stone-300 ring-1 ring-white/10">{a}</span>
                 ))}
               </div>
             </div>
@@ -421,13 +421,13 @@ function StrukturDoc() {
         </div>
       </div>
 
-      <div className="flex justify-center"><div className="h-8 w-px bg-amber-500/30" /></div>
+      <div className="flex justify-center"><div className="h-4 w-px bg-amber-500/30" /></div>
 
       {/* PIC Angkatan */}
-      <div className="rounded-3xl border border-white/8 bg-white/[0.02] p-7 text-center">
+      <div className="rounded-2xl border border-white/8 bg-white/[0.02] px-6 py-4 text-center">
         <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-stone-500">Jaringan</span>
-        <h3 className="mt-2 font-display text-2xl font-medium text-[#f5efe6]">Perwakilan Angkatan (PIC)</h3>
-        <p className="mt-2 mx-auto max-w-md text-sm text-stone-400">{struktur.pic}</p>
+        <h3 className="mt-1 font-display text-xl font-medium text-[#f5efe6]">Perwakilan Angkatan (PIC)</h3>
+        <p className="mt-1 mx-auto max-w-md text-sm text-stone-400">{struktur.pic}</p>
       </div>
     </div>
   );
