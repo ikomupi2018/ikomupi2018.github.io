@@ -286,8 +286,8 @@ const struktur = {
   ],
   bidang: [
     { nama: "Program & Acara", anggota: ["Fathia Islamiyatul S", "Reva Girvan"], icon: Users },
-    { nama: "Pengembangan Profesional & Karir", anggota: ["Wanda Putri R", "Dinda DNA"], icon: Briefcase },
-    { nama: "Hubungan Alumni & Antar-Angkatan", anggota: ["Rizki Dwi P"], icon: Network },
+    { nama: "Pengembangan Profesional & Karir", anggota: ["Wanda Putri R", "Dinda DNA", "Renanda Dwina P"], icon: Briefcase },
+    { nama: "Hubungan Alumni & Antar-Angkatan", anggota: ["Rizki Dwi P", "Regine Deanaendra"], icon: Network },
     { nama: "Komunikasi & Media", anggota: ["Rafi Shalahudin", "Marcellodiansyah"], icon: Megaphone },
   ],
   pic: "1 koordinator per angkatan — jembatan ke pengurus inti & penjaga data angkatannya.",
