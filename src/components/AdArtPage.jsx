@@ -15,6 +15,10 @@ import {
   Lock,
   Eye,
   EyeOff,
+  ClipboardList,
+  CheckCircle2,
+  Target,
+  FileCheck,
 } from "lucide-react";
 
 // ─── DRAFT CONTENT — disahkan dalam Musyawarah Besar AIKU ───────────────────────
@@ -24,7 +28,7 @@ const anggaranDasar = [
     bab: "BAB I",
     judul: "Nama, Waktu, dan Kedudukan",
     pasal: [
-      { no: "Pasal 1", ayat: ["Organisasi ini bernama Alumni Ikatan Komunikasi UPI, yang selanjutnya disingkat AIKU."] },
+      { no: "Pasal 1", ayat: ["Organisasi ini bernama Alumni Ilmu Komunikasi UPI, yang selanjutnya disingkat AIKU."] },
       { no: "Pasal 2", ayat: ["AIKU ditetapkan untuk jangka waktu yang tidak ditentukan."] },
       { no: "Pasal 3", ayat: ["AIKU berkedudukan di Kota Bandung, mengikuti domisili Program Studi Ilmu Komunikasi Universitas Pendidikan Indonesia."] },
     ],
@@ -73,6 +77,8 @@ const anggaranDasar = [
     pasal: [
       { no: "Pasal 10", ayat: ["Pengurus AIKU dipimpin oleh seorang Ketua Umum yang dipilih melalui Musyawarah Besar."] },
       { no: "Pasal 11", ayat: ["Masa bakti kepengurusan adalah 3 (tiga) tahun, dan Ketua Umum dapat menjabat paling banyak 2 (dua) periode berturut-turut."] },
+      { no: "Pasal 12", judul: "Pemberhentian Ketua Umum", ayat: ["Ketua Umum dapat diberhentikan sebelum masa jabatannya berakhir melalui Musyawarah Besar Luar Biasa apabila terbukti tidak dapat menjalankan amanah atau atas permintaan sendiri."] },
+      { no: "Pasal 13", judul: "Serah Terima Jabatan", ayat: ["Pengurus yang mengakhiri masa bakti wajib melakukan serah terima kepada kepengurusan baru selambat-lambatnya 30 (tiga puluh) hari setelah pelantikan, mencakup seluruh aset, dokumen, dan data organisasi."] },
     ],
   },
   {
@@ -80,7 +86,7 @@ const anggaranDasar = [
     judul: "Permusyawaratan",
     pasal: [
       {
-        no: "Pasal 12",
+        no: "Pasal 14",
         ayat: [
           "Permusyawaratan dalam AIKU terdiri atas Musyawarah Besar (Mubes), Rapat Kerja, dan Rapat Pengurus.",
           "Musyawarah Besar merupakan forum pengambilan keputusan tertinggi organisasi.",
@@ -93,11 +99,12 @@ const anggaranDasar = [
     judul: "Keuangan",
     pasal: [
       {
-        no: "Pasal 13",
+        no: "Pasal 15",
         ayat: [
           "AIKU tidak memungut iuran keanggotaan dalam bentuk apapun.",
           "Sumber keuangan AIKU berasal dari donasi sukarela yang dibuka secara temporer pada setiap penyelenggaraan acara yang memerlukan biaya, dan hanya berlaku selama kebutuhan acara tersebut.",
           "Pengelolaan keuangan dilakukan secara transparan dan dilaporkan kepada seluruh anggota setelah setiap acara selesai.",
+          "Laporan keuangan diverifikasi oleh sekurang-kurangnya satu anggota pengurus di luar Bendahara sebelum dipublikasikan.",
         ],
       },
     ],
@@ -106,21 +113,21 @@ const anggaranDasar = [
     bab: "BAB VIII",
     judul: "Perubahan AD/ART",
     pasal: [
-      { no: "Pasal 14", ayat: ["Perubahan Anggaran Dasar dan Anggaran Rumah Tangga hanya dapat dilakukan melalui Musyawarah Besar."] },
+      { no: "Pasal 16", ayat: ["Perubahan Anggaran Dasar dan Anggaran Rumah Tangga hanya dapat dilakukan melalui Musyawarah Besar."] },
     ],
   },
   {
     bab: "BAB IX",
     judul: "Pembubaran",
     pasal: [
-      { no: "Pasal 15", ayat: ["Pembubaran AIKU hanya dapat dilakukan melalui Musyawarah Besar Luar Biasa yang diselenggarakan khusus untuk itu."] },
+      { no: "Pasal 17", ayat: ["Pembubaran AIKU hanya dapat dilakukan melalui Musyawarah Besar Luar Biasa yang diselenggarakan khusus untuk itu."] },
     ],
   },
   {
     bab: "BAB X",
     judul: "Penutup",
     pasal: [
-      { no: "Pasal 16", ayat: ["Hal-hal yang belum diatur dalam Anggaran Dasar ini akan diatur lebih lanjut dalam Anggaran Rumah Tangga dan ketetapan organisasi lainnya."] },
+      { no: "Pasal 18", ayat: ["Hal-hal yang belum diatur dalam Anggaran Dasar ini akan diatur lebih lanjut dalam Anggaran Rumah Tangga dan ketetapan organisasi lainnya."] },
     ],
   },
 ];
@@ -168,6 +175,24 @@ const anggaranRumahTangga = [
     pasal: [
       { no: "Pasal 9", ayat: ["Masa jabatan pengurus adalah 3 (tiga) tahun terhitung sejak pelantikan."] },
       { no: "Pasal 10", ayat: ["Pergantian pengurus antarwaktu dapat dilakukan melalui Rapat Pengurus apabila terdapat kekosongan jabatan."] },
+      {
+        no: "Pasal 11",
+        judul: "Pemakzulan Ketua Umum",
+        ayat: [
+          "Ketua Umum dapat dimakzulkan melalui Musyawarah Besar Luar Biasa yang diusulkan secara tertulis oleh perwakilan sekurang-kurangnya separuh angkatan, dengan alasan yang jelas dan dapat dipertanggungjawabkan.",
+          "Sebelum Mubes Luar Biasa digelar, wajib dilakukan mediasi internal sekurang-kurangnya satu kali.",
+          "Apabila Ketua Umum dimakzulkan, Wakil Ketua menjalankan tugas Ketua Umum hingga Mubes Luar Biasa menetapkan penggantinya.",
+        ],
+      },
+      {
+        no: "Pasal 12",
+        judul: "Serah Terima Jabatan",
+        ayat: [
+          "Pengurus demisioner wajib menyelesaikan serah terima jabatan kepada kepengurusan baru selambat-lambatnya 30 (tiga puluh) hari setelah pelantikan.",
+          "Serah terima mencakup seluruh aset fisik dan digital, dokumen, arsip, akses akun resmi, serta data keanggotaan organisasi.",
+          "Proses serah terima didokumentasikan dalam berita acara yang ditandatangani kedua pihak.",
+        ],
+      },
     ],
   },
   {
@@ -175,7 +200,7 @@ const anggaranRumahTangga = [
     judul: "Pemilihan Ketua Umum",
     pasal: [
       {
-        no: "Pasal 11",
+        no: "Pasal 13",
         judul: "Penjaringan Calon",
         ayat: [
           "Posisi Ketua Umum dibuka secara terbuka bagi seluruh anggota dari semua angkatan, dan diumumkan melalui kanal resmi organisasi.",
@@ -184,7 +209,7 @@ const anggaranRumahTangga = [
         ],
       },
       {
-        no: "Pasal 12",
+        no: "Pasal 14",
         judul: "Penetapan Ketua Umum",
         ayat: [
           "Penetapan Ketua Umum dilakukan dalam Musyawarah Besar.",
@@ -194,7 +219,7 @@ const anggaranRumahTangga = [
         ],
       },
       {
-        no: "Pasal 13",
+        no: "Pasal 15",
         judul: "Kuorum dan Keabsahan",
         ayat: [
           "Musyawarah Besar dinyatakan sah apabila dihadiri oleh perwakilan dari sekurang-kurangnya separuh jumlah angkatan yang ada.",
@@ -208,11 +233,12 @@ const anggaranRumahTangga = [
     judul: "Rapat-Rapat",
     pasal: [
       {
-        no: "Pasal 14",
+        no: "Pasal 16",
         ayat: [
           "Musyawarah Besar diselenggarakan sekali dalam satu periode kepengurusan.",
           "Rapat Kerja diselenggarakan untuk menyusun program kerja tahunan.",
-          "Rapat Pengurus diselenggarakan sesuai kebutuhan organisasi.",
+          "Rapat Pengurus diselenggarakan sesuai kebutuhan organisasi dan dinyatakan sah apabila dihadiri lebih dari separuh pengurus inti.",
+          "Setiap rapat wajib menghasilkan notulensi yang didokumentasikan.",
         ],
       },
     ],
@@ -222,11 +248,12 @@ const anggaranRumahTangga = [
     judul: "Keuangan",
     pasal: [
       {
-        no: "Pasal 15",
+        no: "Pasal 17",
         ayat: [
           "AIKU tidak memiliki iuran rutin; tidak ada kewajiban finansial berkala bagi anggota.",
           "Donasi dibuka secara temporer hanya untuk acara tertentu yang membutuhkan biaya operasional, dan ditutup setelah acara berlangsung.",
           "Setiap penerimaan dan pengeluaran dalam penyelenggaraan acara wajib dicatat, didokumentasikan, dan dilaporkan kepada anggota setelah acara selesai.",
+          "Sebelum dipublikasikan, laporan keuangan diverifikasi oleh satu anggota pengurus di luar Bendahara yang ditunjuk dalam Rapat Pengurus.",
         ],
       },
     ],
@@ -235,14 +262,14 @@ const anggaranRumahTangga = [
     bab: "BAB VII",
     judul: "Atribut Organisasi",
     pasal: [
-      { no: "Pasal 16", ayat: ["AIKU memiliki atribut berupa logo dan identitas visual yang ditetapkan oleh pengurus dan disahkan dalam Musyawarah Besar."] },
+      { no: "Pasal 18", ayat: ["AIKU memiliki atribut berupa logo dan identitas visual yang ditetapkan oleh pengurus dan disahkan dalam Musyawarah Besar."] },
     ],
   },
   {
     bab: "BAB VIII",
     judul: "Penutup",
     pasal: [
-      { no: "Pasal 17", ayat: ["Hal-hal yang belum diatur dalam Anggaran Rumah Tangga ini akan ditetapkan kemudian melalui ketetapan organisasi."] },
+      { no: "Pasal 19", ayat: ["Hal-hal yang belum diatur dalam Anggaran Rumah Tangga ini akan ditetapkan kemudian melalui ketetapan organisasi."] },
     ],
   },
 ];
@@ -271,6 +298,14 @@ const gbho = [
     ],
   },
   {
+    judul: "Indikator Keberhasilan",
+    isi: [
+      "Tahun 1 — terselenggaranya minimal 1 acara silaturahmi lintas angkatan; database anggota aktif terbentuk; AD/ART dan struktur organisasi disahkan dalam Mubes.",
+      "Tahun 2 — minimal 1 program pengembangan profesional berjalan rutin; ada kontribusi konkret ke almamater (kuliah tamu, beasiswa, atau kerja sama).",
+      "Akhir Periode — kepengurusan baru terbentuk melalui proses yang sesuai AD/ART; serah terima berjalan tertib; organisasi tidak bergantung pada satu individu.",
+    ],
+  },
+  {
     judul: "Arah Bidang Program",
     isi: [
       "Networking & Silaturahmi — reuni, gathering, dan halal bihalal yang inklusif lintas angkatan.",
@@ -291,7 +326,7 @@ const struktur = {
   pembina: { label: "Dewan Pembina / Penasihat", desc: "Alumni senior & tokoh — arahan strategis, bukan kerja harian", names: [] },
   inti: [
     { jabatan: "Ketua Umum", nama: "Cecep Abdurrohman Malik Ibrahim", icon: Crown },
-    { jabatan: "Wakil Ketua", nama: "Naufal Fadhilah", icon: UserCog },
+    { jabatan: "Wakil Ketua", nama: "M. Naufal Fadhilah", icon: UserCog },
     { jabatan: "Sekretaris", nama: "Alanis Rani Rayhana", icon: PenLine },
     { jabatan: "Bendahara", nama: "—", icon: Wallet },
   ],
@@ -304,10 +339,94 @@ const struktur = {
   pic: "1 koordinator per angkatan — jembatan ke pengurus inti & penjaga data angkatannya.",
 };
 
+const sop = [
+  {
+    bidang: "Program & Acara",
+    icon: Users,
+    tujuan: "Merencanakan, mengkoordinasikan, dan mengevaluasi seluruh kegiatan AIKU agar terselenggara secara terstruktur dan berdampak.",
+    ruangLingkup: "Berlaku untuk semua kegiatan resmi AIKU, mulai dari ideasi hingga pelaporan pasca acara.",
+    prosedur: [
+      { langkah: "Ideasi & Inisiasi", detail: "Usulkan ide acara disertai latar belakang, tujuan, dan estimasi peserta. Diajukan minimal 8 minggu sebelum tanggal pelaksanaan." },
+      { langkah: "Penyusunan Proposal", detail: "Buat proposal lengkap: rundown, kebutuhan SDM, anggaran, dan rencana komunikasi ke anggota. Koordinasikan dengan Bidang Komunikasi & Media untuk promosi." },
+      { langkah: "Persetujuan", detail: "Proposal disetujui oleh Ketua Umum dalam Rapat Pengurus. Jika ada kebutuhan donasi, koordinasikan dengan Bendahara untuk membuka penggalangan dana." },
+      { langkah: "Persiapan & Koordinasi", detail: "Tetapkan PIC setiap sub-tugas. Lakukan briefing teknis minimal 3 hari sebelum acara. Konfirmasi kehadiran narasumber/tamu jika ada." },
+      { langkah: "Pelaksanaan", detail: "Jalankan acara sesuai rundown. Dokumentasikan setiap sesi (foto/video) untuk keperluan Bidang Komunikasi & Media." },
+      { langkah: "Evaluasi & Pelaporan", detail: "Kirimkan laporan evaluasi kepada Ketua Umum maksimal 7 hari setelah acara, mencakup capaian, kendala, dan rekomendasi untuk acara berikutnya." },
+    ],
+    output: ["Proposal acara", "Rundown & susunan panitia", "Dokumentasi acara", "Laporan evaluasi pasca acara"],
+    kpi: [
+      "Minimal 2 acara resmi per tahun",
+      "Tingkat kehadiran ≥ 30% anggota aktif per acara",
+      "Laporan evaluasi tersampaikan ≤ 7 hari pasca acara",
+    ],
+  },
+  {
+    bidang: "Pengembangan Profesional & Karir",
+    icon: Briefcase,
+    tujuan: "Memfasilitasi pertumbuhan profesional anggota dan memperluas peluang karir melalui program mentoring, knowledge-sharing, dan job referral.",
+    ruangLingkup: "Mencakup seluruh program yang berkaitan dengan kompetensi profesional, karir, dan pengembangan diri anggota AIKU.",
+    prosedur: [
+      { langkah: "Survey Kebutuhan", detail: "Lakukan survey kebutuhan anggota setiap awal tahun untuk memetakan topik yang relevan dan format yang diinginkan (webinar, mentoring 1-on-1, job fair, dll.)." },
+      { langkah: "Penyusunan Kalender Program", detail: "Susun kalender program tahunan berdasarkan hasil survey. Tetapkan minimal 2 program utama per tahun dengan jadwal dan PIC masing-masing." },
+      { langkah: "Rekrutmen Narasumber & Mentor", detail: "Identifikasi dan hubungi alumni yang relevan sebagai narasumber atau mentor. Berikan brief yang jelas mengenai ekspektasi dan format program." },
+      { langkah: "Koordinasi Teknis", detail: "Koordinasikan penyelenggaraan dengan Bidang Program & Acara untuk kebutuhan logistik, dan Bidang Komunikasi & Media untuk promosi." },
+      { langkah: "Pelaksanaan Program", detail: "Jalankan program sesuai rencana. Pastikan materi/rekaman tersimpan dan dapat diakses ulang oleh anggota yang tidak hadir." },
+      { langkah: "Pengelolaan Job Board", detail: "Kumpulkan dan publikasikan informasi lowongan kerja dari jaringan alumni secara berkala melalui kanal resmi. Verifikasi relevansi sebelum dipublikasikan." },
+      { langkah: "Evaluasi Dampak", detail: "Ukur manfaat program melalui feedback form pasca kegiatan. Kompilasi hasil dan gunakan sebagai bahan perbaikan program berikutnya." },
+    ],
+    output: ["Kalender program tahunan", "Materi & rekaman program", "Job board terupdate", "Laporan feedback & evaluasi"],
+    kpi: [
+      "Minimal 2 program pengembangan per tahun",
+      "Minimal 1 info lowongan dipublikasikan per bulan (jika tersedia)",
+      "Tingkat kepuasan peserta ≥ 80% berdasarkan feedback form",
+    ],
+  },
+  {
+    bidang: "Hubungan Alumni & Antar-Angkatan",
+    icon: Network,
+    tujuan: "Menjaga keterhubungan seluruh anggota lintas angkatan, memutakhirkan database alumni, dan memastikan anggota baru (wisudawan) terhubung dengan AIKU.",
+    ruangLingkup: "Mencakup pengelolaan data anggota, koordinasi PIC angkatan, dan penjangkauan alumni baru.",
+    prosedur: [
+      { langkah: "Pemutakhiran Database", detail: "Koordinasikan dengan PIC setiap angkatan untuk memperbarui data anggota (kontak, profesi, domisili) setiap kuartal. Gunakan platform yang ditetapkan organisasi." },
+      { langkah: "Koordinasi PIC Angkatan", detail: "Adakan pertemuan rutin dengan seluruh PIC angkatan minimal sekali per semester untuk berbagi informasi dan menyampaikan arahan dari pengurus inti." },
+      { langkah: "Penjangkauan Anggota Baru", detail: "Pantau jadwal wisuda Ilmu Komunikasi UPI. Hubungi dan sambut wisudawan baru melalui PIC angkatan atau langsung via kanal resmi dalam 30 hari setelah wisuda." },
+      { langkah: "Fasilitasi Komunikasi Lintas Angkatan", detail: "Kelola dan moderasi grup komunikasi resmi AIKU. Pastikan informasi dari pengurus inti tersebar merata ke seluruh anggota." },
+      { langkah: "Pelaporan Data", detail: "Sampaikan laporan perkembangan database kepada Sekretaris setiap kuartal, termasuk jumlah anggota aktif, angkatan yang belum terjangkau, dan kendalanya." },
+    ],
+    output: ["Database anggota termutakhir", "Laporan kuartalan data keanggotaan", "Notulensi pertemuan PIC angkatan"],
+    kpi: [
+      "Coverage data ≥ 70% total alumni terdaftar",
+      "PIC tersedia di setiap angkatan aktif",
+      "Anggota baru terjangkau dalam ≤ 30 hari pasca wisuda",
+    ],
+  },
+  {
+    bidang: "Komunikasi & Media",
+    icon: Megaphone,
+    tujuan: "Mengelola identitas digital, komunikasi eksternal, dan konten AIKU agar konsisten, relevan, dan memperkuat citra organisasi.",
+    ruangLingkup: "Mencakup semua kanal komunikasi resmi AIKU: media sosial, website, dan materi komunikasi untuk kegiatan.",
+    prosedur: [
+      { langkah: "Perencanaan Konten", detail: "Susun kalender konten bulanan setiap akhir bulan sebelumnya. Konten mencakup info kegiatan, profil anggota, edukasi, dan konten komunitas. Koordinasikan dengan bidang lain untuk kebutuhan konten mereka." },
+      { langkah: "Produksi Konten", detail: "Buat konten (desain visual, caption, artikel) sesuai panduan identitas visual AIKU. Gunakan tone of voice yang hangat, inklusif, dan profesional." },
+      { langkah: "Review & Persetujuan", detail: "Konten yang menyangkut kebijakan organisasi atau pernyataan resmi wajib disetujui Ketua Umum sebelum dipublikasikan. Konten rutin cukup disetujui koordinator bidang." },
+      { langkah: "Publikasi", detail: "Publikasikan konten sesuai jadwal kalender. Pastikan keseragaman lintas platform (visual, teks, hashtag)." },
+      { langkah: "Monitoring & Respons", detail: "Pantau interaksi di kanal resmi setiap hari. Tanggapi pertanyaan atau komentar publik dalam ≤ 24 jam. Eskalasikan isu sensitif ke Ketua Umum." },
+      { langkah: "Pelaporan Bulanan", detail: "Buat laporan performa konten bulanan (jangkauan, interaksi, pertumbuhan) dan sampaikan ke Ketua Umum sebagai bahan evaluasi strategi komunikasi." },
+    ],
+    output: ["Kalender konten bulanan", "Konten terpublikasi di semua kanal", "Laporan analytics bulanan"],
+    kpi: [
+      "Minimal 4 konten dipublikasikan per bulan",
+      "Respons pertanyaan publik ≤ 24 jam",
+      "Laporan analytics bulanan tersedia setiap awal bulan",
+    ],
+  },
+];
+
 const tabs = [
   { id: "ad", label: "Anggaran Dasar", icon: ScrollText },
   { id: "art", label: "Anggaran Rumah Tangga", icon: FileText },
   { id: "gbho", label: "GBHO", icon: Compass },
+  { id: "sop", label: "SOP Bidang", icon: ClipboardList },
   { id: "struktur", label: "Struktur Organisasi", icon: Network },
 ];
 
@@ -433,6 +552,104 @@ function StrukturDoc() {
   );
 }
 
+function SopDoc() {
+  const [open, setOpen] = useState(null);
+  return (
+    <div className="space-y-6">
+      {sop.map((s, i) => {
+        const isOpen = open === i;
+        return (
+          <div key={i} className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
+            {/* Header */}
+            <button
+              onClick={() => setOpen(isOpen ? null : i)}
+              className="w-full flex items-center justify-between gap-4 p-5 text-left"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+                  <s.icon className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-500/70">Standar Operasional Prosedur</p>
+                  <h3 className="font-display text-lg text-[#f5efe6]">{s.bidang}</h3>
+                </div>
+              </div>
+              <span className={`text-stone-500 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}>▾</span>
+            </button>
+
+            {isOpen && (
+              <div className="border-t border-white/8 px-5 pb-6 pt-5 space-y-6">
+                {/* Tujuan & Ruang Lingkup */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-xl bg-amber-500/[0.05] border border-amber-500/15 p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Target className="h-3.5 w-3.5 text-amber-400" />
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-400">Tujuan</span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-stone-300">{s.tujuan}</p>
+                  </div>
+                  <div className="rounded-xl bg-white/[0.03] border border-white/8 p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <FileCheck className="h-3.5 w-3.5 text-stone-400" />
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Ruang Lingkup</span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-stone-400">{s.ruangLingkup}</p>
+                  </div>
+                </div>
+
+                {/* Prosedur */}
+                <div>
+                  <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-500">Alur Prosedur</p>
+                  <div className="space-y-2">
+                    {s.prosedur.map((p, j) => (
+                      <div key={j} className="flex gap-3">
+                        <div className="flex flex-col items-center">
+                          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500/15 text-amber-400 text-[11px] font-bold">{j + 1}</div>
+                          {j < s.prosedur.length - 1 && <div className="mt-1 h-full w-px bg-amber-500/15" />}
+                        </div>
+                        <div className="pb-3">
+                          <p className="text-sm font-semibold text-[#f5efe6]">{p.langkah}</p>
+                          <p className="mt-0.5 text-sm leading-relaxed text-stone-400">{p.detail}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Output & KPI */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Output / Dokumen</p>
+                    <ul className="space-y-1.5">
+                      {s.output.map((o, k) => (
+                        <li key={k} className="flex items-start gap-2 text-sm text-stone-300">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50" />
+                          {o}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Indikator Kinerja (KPI)</p>
+                    <ul className="space-y-1.5">
+                      {s.kpi.map((k, l) => (
+                        <li key={l} className="flex items-start gap-2 text-sm text-stone-300">
+                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500/60" />
+                          {k}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 const STRUKTUR_PASSWORD = "aiku2026";
@@ -490,7 +707,7 @@ export default function AdArtPage() {
               AD/ART, GBHO &<br /><span className="italic text-amber-400">Struktur Organisasi</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-stone-400">
-              Pedoman dasar penyelenggaraan Alumni Ikatan Komunikasi UPI — dari aturan pokok hingga arah program kerja.
+              Pedoman dasar penyelenggaraan Alumni Ilmu Komunikasi UPI — dari aturan pokok hingga arah program kerja.
             </p>
 
             {/* Draft notice */}
@@ -546,6 +763,13 @@ export default function AdArtPage() {
                 <h2 className="mb-2 font-display text-3xl font-semibold text-[#f5efe6]">Garis Besar Haluan Organisasi</h2>
                 <p className="mb-4 text-sm text-stone-500">Arah dan pola umum program kerja.</p>
                 <GbhoDoc />
+              </>
+            )}
+            {tab === "sop" && (
+              <>
+                <h2 className="mb-2 font-display text-3xl font-semibold text-[#f5efe6]">SOP Bidang</h2>
+                <p className="mb-6 text-sm text-stone-500">Standar operasional prosedur tiap bidang kepengurusan AIKU.</p>
+                <SopDoc />
               </>
             )}
             {tab === "struktur" && (
