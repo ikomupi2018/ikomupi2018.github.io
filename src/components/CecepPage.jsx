@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Target,
   Zap,
@@ -18,6 +18,7 @@ import {
   BarChart3,
   CheckCircle2,
   ArrowRight,
+  ArrowDown,
   ChevronDown,
   ChevronUp,
   Star,
@@ -38,12 +39,19 @@ import {
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
+const heroStats = [
+  { value: "6+", label: "Tahun On-Air\nBroadcasting" },
+  { value: "20+", label: "Acara MC &\nModerator" },
+  { value: "3", label: "Institusi\nMengajar" },
+  { value: "4", label: "Penghargaan\n& Juara" },
+];
+
 const workExperiences = [
   {
     org: "TVRI Jawa Barat",
     location: "Bandung",
     period: "Jan 2024 – Sekarang",
-    role: "TV Presenter",
+    role: "Jurnalis & TV Presenter",
     icon: Monitor,
     color: "amber",
     points: [
@@ -163,9 +171,9 @@ const workExperiences = [
 const formalEducation = [
   {
     school: "Universitas Padjadjaran Bandung",
-    degree: "S1 Ilmu Komunikasi",
+    degree: "S2 Ilmu Komunikasi",
     period: "Agu 2025 – Sekarang",
-    notes: ["Mahasiswa aktif"],
+    notes: ["Mahasiswa aktif (on-going)"],
   },
   {
     school: "Universitas Pendidikan Indonesia",
@@ -249,6 +257,9 @@ const achievements = [
   "Juara 1 International Glocal Young Leadership 2021 (Kolaborasi Indonesia–Korea)",
   "Juara Indomie VO Jamming 2020 (Kompetisi Voice Over oleh PT Indofood)",
 ];
+
+const softSkills = ["Public Speaking", "Leadership", "Management", "Negotiating", "Casting Director", "Problem Solving", "Bahasa Inggris (Intermediate)"];
+const hardSkills = ["Microsoft Office", "Adobe Premiere Pro", "Adobe Photoshop", "Audacity", "Canva"];
 
 const visi =
   "Membangun AIKU sebagai wadah alumni yang relevan, inklusif, dan berdampak nyata — bagi anggotanya, almamater, dan masyarakat luas.";
@@ -473,692 +484,689 @@ const roadmap = [
   },
 ];
 
+const indikator = [
+  { icon: Users, title: "Tingkat Partisipasi", desc: "Jumlah hadir dibandingkan target per kegiatan. Evaluasi per program." },
+  { icon: Star, title: "Kepuasan Peserta", desc: "Survei singkat pasca-event untuk mengukur kualitas dan relevansi program." },
+  { icon: TrendingUp, title: "Repeat Participation", desc: "Apakah orang yang sama datang lagi di acara berikutnya — indikator kuat program bermanfaat." },
+  { icon: Award, title: "Dampak Konkret", desc: "Untuk program mentoring/beasiswa: dampak terukur pada penerima manfaat." },
+];
+
 const colorMap = {
-  amber: {
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
-    icon: "text-amber-400",
-    badge: "bg-amber-500/15 text-amber-300 ring-amber-500/25",
-    dot: "bg-amber-500",
-    num: "text-amber-500/30",
-  },
-  blue: {
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
-    icon: "text-blue-400",
-    badge: "bg-blue-500/15 text-blue-300 ring-blue-500/25",
-    dot: "bg-blue-500",
-    num: "text-blue-500/30",
-  },
-  green: {
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
-    icon: "text-emerald-400",
-    badge: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/25",
-    dot: "bg-emerald-500",
-    num: "text-emerald-500/30",
-  },
-  purple: {
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20",
-    icon: "text-violet-400",
-    badge: "bg-violet-500/15 text-violet-300 ring-violet-500/25",
-    dot: "bg-violet-500",
-    num: "text-violet-500/30",
-  },
-  rose: {
-    bg: "bg-rose-500/10",
-    border: "border-rose-500/20",
-    icon: "text-rose-400",
-    badge: "bg-rose-500/15 text-rose-300 ring-rose-500/25",
-    dot: "bg-rose-500",
-    num: "text-rose-500/30",
-  },
-  teal: {
-    bg: "bg-teal-500/10",
-    border: "border-teal-500/20",
-    icon: "text-teal-400",
-    badge: "bg-teal-500/15 text-teal-300 ring-teal-500/25",
-    dot: "bg-teal-500",
-    num: "text-teal-500/30",
-  },
-  orange: {
-    bg: "bg-orange-500/10",
-    border: "border-orange-500/20",
-    icon: "text-orange-400",
-    badge: "bg-orange-500/15 text-orange-300 ring-orange-500/25",
-    dot: "bg-orange-500",
-    num: "text-orange-500/30",
-  },
+  amber: { bg: "bg-amber-500/10", border: "border-amber-500/20", icon: "text-amber-400", num: "text-amber-500/30" },
+  blue: { bg: "bg-blue-500/10", border: "border-blue-500/20", icon: "text-blue-400", num: "text-blue-500/30" },
+  green: { bg: "bg-emerald-500/10", border: "border-emerald-500/20", icon: "text-emerald-400", num: "text-emerald-500/30" },
+  purple: { bg: "bg-violet-500/10", border: "border-violet-500/20", icon: "text-violet-400", num: "text-violet-500/30" },
+  rose: { bg: "bg-rose-500/10", border: "border-rose-500/20", icon: "text-rose-400", num: "text-rose-500/30" },
+  teal: { bg: "bg-teal-500/10", border: "border-teal-500/20", icon: "text-teal-400", num: "text-teal-500/30" },
+  orange: { bg: "bg-orange-500/10", border: "border-orange-500/20", icon: "text-orange-400", num: "text-orange-500/30" },
 };
 
-// ─── Sub-components ────────────────────────────────────────────────────────────
+const toc = [
+  { id: "profil", label: "Profil" },
+  { id: "visi", label: "Visi & Misi" },
+  { id: "gagasan", label: "Gagasan" },
+  { id: "infrastruktur", label: "Infrastruktur" },
+  { id: "program", label: "Program" },
+  { id: "roadmap", label: "Roadmap" },
+];
 
-function WorkCard({ exp }) {
-  const [open, setOpen] = useState(false);
-  const c = colorMap[exp.color] || colorMap.amber;
+// ─── Primitives ──────────────────────────────────────────────────────────────
+
+function Reveal({ children, className = "", delay = 0, as: Tag = "div" }) {
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
-    <div className={`rounded-2xl border ${c.border} ${c.bg} overflow-hidden transition-all`}>
-      <button className="flex w-full items-start gap-4 p-5 text-left" onClick={() => setOpen((v) => !v)}>
-        <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${c.bg} border ${c.border}`}>
-          <exp.icon className={`h-4 w-4 ${c.icon}`} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="font-semibold text-white text-sm">{exp.org}</p>
-            <span className="text-stone-600 text-xs hidden sm:inline">·</span>
-            <span className="text-stone-500 text-xs">{exp.location}</span>
-          </div>
-          <p className={`text-xs font-medium mt-0.5 ${c.icon}`}>{exp.role}</p>
-          <p className="text-xs text-stone-600 mt-0.5">{exp.period}</p>
-        </div>
-        {open ? <ChevronUp className="h-4 w-4 text-stone-500 shrink-0 mt-1" /> : <ChevronDown className="h-4 w-4 text-stone-500 shrink-0 mt-1" />}
-      </button>
-      {open && (
-        <ul className="border-t border-white/5 px-5 pb-5 pt-3 space-y-2">
-          {exp.points.map((p, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-stone-300 leading-relaxed">
-              <ArrowRight className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${c.icon} opacity-70`} />
-              {p}
-            </li>
-          ))}
-        </ul>
+    <Tag
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={`transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        shown ? "opacity-100 translate-y-0 blur-0" : "opacity-0 translate-y-8 blur-[2px]"
+      } ${className}`}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function Eyebrow({ children, num }) {
+  return (
+    <div className="flex items-center gap-3">
+      {num && (
+        <span className="font-display text-sm font-medium italic text-amber-500/70">
+          {num}
+        </span>
       )}
+      <span className="h-px w-8 bg-amber-500/40" />
+      <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-amber-500/90">
+        {children}
+      </span>
     </div>
   );
 }
 
-function SectionLabel({ children }) {
+function SectionTitle({ children, className = "" }) {
   return (
-    <p className="mb-4 text-center text-xs font-semibold uppercase tracking-widest text-amber-500">
-      {children}
-    </p>
-  );
-}
-
-function SectionHeading({ children }) {
-  return (
-    <h2 className="mb-4 text-center text-3xl font-bold text-white md:text-4xl">
+    <h2 className={`font-display text-[2.5rem] leading-[1.05] font-semibold tracking-tight text-[#f5efe6] md:text-6xl ${className}`}>
       {children}
     </h2>
   );
 }
 
-function SectionSub({ children }) {
+// ─── Section components ────────────────────────────────────────────────────────
+
+function ExperienceRow({ exp, index }) {
+  const [open, setOpen] = useState(false);
+  const c = colorMap[exp.color] || colorMap.amber;
   return (
-    <p className="text-center text-base text-stone-400 md:text-lg">
-      {children}
-    </p>
+    <Reveal delay={index * 40}>
+      <div className="group border-t border-white/8 first:border-t-0">
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="flex w-full items-start gap-5 py-5 text-left"
+        >
+          <span className="font-display mt-1 hidden w-8 shrink-0 text-sm italic text-stone-600 sm:block">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <div className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${c.bg} ${c.icon}`}>
+            <exp.icon className="h-4 w-4" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+              <p className="font-display text-lg font-medium text-[#f5efe6] leading-snug">{exp.org}</p>
+              <span className="text-xs text-stone-500">{exp.location}</span>
+            </div>
+            <p className={`mt-0.5 text-sm ${c.icon}`}>{exp.role}</p>
+          </div>
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            <span className="text-[11px] tabular-nums text-stone-500">{exp.period}</span>
+            <ChevronDown className={`h-4 w-4 text-stone-600 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+          </div>
+        </button>
+        <div className={`grid transition-all duration-500 ease-out ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+          <div className="overflow-hidden">
+            <ul className="space-y-2 pb-6 pl-0 sm:pl-[3.25rem]">
+              {exp.points.map((p, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed text-stone-400">
+                  <ArrowRight className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${c.icon} opacity-60`} />
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Reveal>
   );
 }
 
-function PointAccordion({ point }) {
+function PointRow({ point, index }) {
   const [open, setOpen] = useState(false);
   const c = colorMap[point.color];
-
   return (
-    <div
-      className={`rounded-2xl border ${c.border} ${c.bg} overflow-hidden transition-all`}
-    >
-      <button
-        className="flex w-full items-center gap-5 p-6 text-left"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className={`text-5xl font-black leading-none ${c.num} select-none hidden sm:block`}>
-          {point.number}
-        </span>
-        <div
-          className={`shrink-0 flex h-11 w-11 items-center justify-center rounded-xl ${c.bg} border ${c.border}`}
-        >
-          <point.icon className={`h-5 w-5 ${c.icon}`} />
+    <Reveal delay={index * 30}>
+      <div className={`overflow-hidden rounded-2xl border transition-colors ${open ? `${c.border} bg-white/[0.03]` : "border-white/8 hover:border-white/15"}`}>
+        <button onClick={() => setOpen((v) => !v)} className="flex w-full items-center gap-5 p-5 text-left sm:p-6">
+          <span className={`font-display hidden text-5xl font-semibold leading-none ${c.num} select-none sm:block`}>
+            {point.number}
+          </span>
+          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${c.bg} ${c.icon}`}>
+            <point.icon className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-display text-lg font-medium text-[#f5efe6] leading-snug">{point.title}</p>
+            <p className="mt-0.5 text-sm text-stone-400">{point.summary}</p>
+          </div>
+          {open ? <ChevronUp className="h-5 w-5 shrink-0 text-stone-500" /> : <ChevronDown className="h-5 w-5 shrink-0 text-stone-500" />}
+        </button>
+        <div className={`grid transition-all duration-500 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+          <div className="overflow-hidden">
+            <div className="space-y-3 border-t border-white/6 px-5 pb-6 pt-4 sm:px-6 sm:pl-[6.5rem]">
+              {point.content.map((para, i) => (
+                <p key={i} className="text-sm leading-relaxed text-stone-300">{para}</p>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-white text-base">{point.title}</p>
-          <p className="text-sm text-stone-400 mt-0.5">{point.summary}</p>
-        </div>
-        {open ? (
-          <ChevronUp className="h-5 w-5 text-stone-500 shrink-0" />
-        ) : (
-          <ChevronDown className="h-5 w-5 text-stone-500 shrink-0" />
-        )}
-      </button>
-
-      {open && (
-        <div className="border-t border-white/5 px-6 pb-6 pt-4 space-y-3">
-          {point.content.map((para, i) => (
-            <p key={i} className="text-sm leading-relaxed text-stone-300">
-              {para}
-            </p>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function InfraCard({ icon: Icon, title, desc }) {
-  return (
-    <div className="rounded-2xl border border-white/8 bg-white/4 p-6 backdrop-blur-sm">
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400">
-        <Icon className="h-5 w-5" />
       </div>
-      <h4 className="mb-2 font-semibold text-white">{title}</h4>
-      <p className="text-sm leading-relaxed text-stone-400">{desc}</p>
-    </div>
+    </Reveal>
   );
 }
 
-function PillarCard({ pillar }) {
+function PillarCard({ pillar, index }) {
   const c = colorMap[pillar.color];
   return (
-    <div className={`rounded-2xl border ${c.border} bg-stone-900 p-7 flex flex-col gap-5`}>
-      <div className="flex items-start gap-4">
-        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${c.bg} border ${c.border}`}>
-          <pillar.icon className={`h-5 w-5 ${c.icon}`} />
+    <Reveal delay={index * 60}>
+      <div className="flex h-full flex-col gap-5 rounded-3xl border border-white/8 bg-white/[0.02] p-7 transition-colors hover:border-white/15">
+        <div className="flex items-start justify-between">
+          <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${c.bg} ${c.icon}`}>
+            <pillar.icon className="h-5 w-5" />
+          </div>
+          <span className={`font-display text-4xl font-semibold leading-none ${c.num}`}>{pillar.number}</span>
         </div>
-        <div>
-          <span className={`text-xs font-semibold uppercase tracking-wider ${c.icon}`}>
-            Pilar {pillar.number}
-          </span>
-          <h4 className="mt-0.5 font-semibold text-white text-base">{pillar.title}</h4>
-        </div>
-      </div>
-
-      <ul className="space-y-2.5">
-        {pillar.programs.map((p, i) => (
-          <li key={i} className="flex items-start gap-2.5 text-sm text-stone-300">
-            <CheckCircle2 className={`mt-0.5 h-4 w-4 shrink-0 ${c.icon}`} />
-            {p}
-          </li>
-        ))}
-      </ul>
-
-      <p className={`mt-auto rounded-lg ${c.bg} border ${c.border} px-4 py-2.5 text-xs leading-relaxed ${c.icon} italic`}>
-        {pillar.note}
-      </p>
-    </div>
-  );
-}
-
-function RoadmapCard({ phase, title, icon: Icon, tasks, index }) {
-  return (
-    <div className="relative flex gap-5">
-      {/* Connector line */}
-      {index < roadmap.length - 1 && (
-        <div className="absolute left-[22px] top-14 h-full w-px bg-gradient-to-b from-amber-500/30 to-transparent" />
-      )}
-      {/* Icon */}
-      <div className="relative shrink-0 flex h-11 w-11 items-center justify-center rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 z-10">
-        <Icon className="h-5 w-5" />
-      </div>
-      {/* Content */}
-      <div className="pb-10">
-        <span className="text-xs font-semibold uppercase tracking-widest text-amber-500">{phase}</span>
-        <h4 className="mt-1 mb-3 text-base font-semibold text-white">{title}</h4>
-        <ul className="space-y-2">
-          {tasks.map((t, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-stone-400">
-              <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500/60" />
-              {t}
+        <h4 className="font-display text-2xl font-medium text-[#f5efe6]">{pillar.title}</h4>
+        <ul className="space-y-2.5">
+          {pillar.programs.map((p, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed text-stone-300">
+              <CheckCircle2 className={`mt-0.5 h-4 w-4 shrink-0 ${c.icon}`} />
+              {p}
             </li>
           ))}
         </ul>
+        <p className={`mt-auto border-l-2 ${c.border} pl-4 text-xs italic leading-relaxed ${c.icon}`}>
+          {pillar.note}
+        </p>
       </div>
-    </div>
+    </Reveal>
   );
 }
 
-// ─── Main Component ────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function CecepPage() {
+  const [active, setActive] = useState("profil");
+
+  useEffect(() => {
+    const els = toc.map((t) => document.getElementById(t.id)).filter(Boolean);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const jump = (id) => (e) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="min-h-screen bg-stone-950 font-sans antialiased pt-16">
+    <div className="relative min-h-screen overflow-hidden bg-[#0a0807] font-body text-stone-300 antialiased">
+      {/* Atmospheric fixed background */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute -top-40 left-1/2 h-[34rem] w-[44rem] -translate-x-1/2 rounded-full blur-[120px]" style={{ background: "rgba(245,158,11,0.10)" }} />
+        <div className="absolute bottom-0 right-0 h-[30rem] w-[30rem] rounded-full blur-[140px]" style={{ background: "rgba(120,53,15,0.18)" }} />
+        <div className="absolute left-0 top-1/3 h-[26rem] w-[26rem] rounded-full blur-[140px]" style={{ background: "rgba(168,85,247,0.06)" }} />
+      </div>
 
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-stone-950 px-6 py-24 md:py-32">
-        {/* Group photo background */}
-        <div
-          className="pointer-events-none absolute inset-0 scale-105 bg-cover bg-center"
-          style={{
-            backgroundImage: "url('/group-bg.jpg')",
-            filter: "brightness(0.18) saturate(0.5)",
-          }}
-        />
-        {/* Dark gradient overlays */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-stone-950/70 via-stone-950/10 to-stone-950/90" />
-        <div className="pointer-events-none absolute inset-0 bg-amber-950/15 mix-blend-multiply" />
-
-        <div className="relative mx-auto max-w-4xl text-center">
-          <span className="mb-6 inline-block rounded-full bg-amber-500/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-amber-400 ring-1 ring-amber-500/30">
-            Pencalonan Ketua AIKU · Angkatan 2018
-          </span>
-
-          {/* Photo */}
-          <div className="relative mx-auto mb-8 h-32 w-32">
-            <div className="pointer-events-none absolute -inset-1 rounded-full bg-gradient-to-br from-amber-500/50 to-transparent blur-md" />
-            <img
-              src="/cecep.jpg"
-              alt="Cecep Abdurrahman Malik Ibrahim"
-              className="relative h-32 w-32 rounded-full object-cover object-top ring-2 ring-amber-500/40 ring-offset-2 ring-offset-stone-950"
-            />
+      <div className="relative z-10">
+        {/* ── HERO ──────────────────────────────────────────────────── */}
+        <section className="relative overflow-hidden px-6 pt-28 pb-16 md:pt-36 md:pb-24">
+          {/* Faded watermark name */}
+          <div aria-hidden className="pointer-events-none absolute -right-10 top-24 select-none font-display text-[10rem] font-semibold leading-none text-white/[0.02] md:text-[18rem]">
+            AIKU
           </div>
 
-          <h1 className="mb-3 text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
-            Cecep Abdurrahman
-            <br />
-            <span className="text-amber-400">Malik Ibrahim</span>
-          </h1>
+          <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+            {/* Left — copy */}
+            <div>
+              <div className="animate-[fadeUp_0.7s_ease-out_both]">
+                <Eyebrow>Pencalonan Ketua AIKU · Angkatan 2018</Eyebrow>
+              </div>
+              <h1 className="mt-7 font-display text-[3.25rem] font-semibold leading-[0.95] tracking-tight text-[#f5efe6] md:text-[5.5rem]">
+                <span className="block animate-[fadeUp_0.7s_ease-out_0.05s_both]">Cecep</span>
+                <span className="block animate-[fadeUp_0.7s_ease-out_0.12s_both]">Abdurrohman</span>
+                <span className="block animate-[fadeUp_0.7s_ease-out_0.19s_both] italic text-amber-400">Malik Ibrahim</span>
+              </h1>
+              <p className="mt-7 max-w-md animate-[fadeUp_0.7s_ease-out_0.28s_both] text-base leading-relaxed text-stone-400 md:text-lg">
+                Membangun AIKU yang relevan, inklusif, dan berdampak — lewat
+                <span className="text-stone-200"> diagnosis yang jujur</span>,
+                <span className="text-stone-200"> fondasi yang kuat</span>, dan
+                <span className="text-stone-200"> kepemimpinan kolaboratif </span>
+                lintas angkatan.
+              </p>
+              <div className="mt-9 flex animate-[fadeUp_0.7s_ease-out_0.36s_both] flex-wrap items-center gap-3">
+                <a href="#visi" onClick={jump("visi")} className="group inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-stone-950 transition-colors hover:bg-amber-400">
+                  Baca Visi & Gagasan
+                  <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+                </a>
+                <a href="#profil" onClick={jump("profil")} className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-stone-200 transition-colors hover:bg-white/5">
+                  Lihat Kredibilitas
+                </a>
+              </div>
+            </div>
 
-          <p className="mb-2 text-base font-medium text-stone-400">
-            Ilmu Komunikasi UPI · Angkatan 2018
-          </p>
-
-          <div className="mx-auto mt-8 mb-10 max-w-2xl">
-            <p className="text-base leading-relaxed text-stone-400 md:text-lg">
-              Calon Ketua AIKU (Alumni Ikatan Komunikasi UPI) yang membawa
-              pendekatan berbasis diagnosis, infrastruktur yang kuat, dan
-              kepemimpinan kolaboratif lintas angkatan.
-            </p>
+            {/* Right — portrait */}
+            <div className="animate-[fadeUp_0.8s_ease-out_0.2s_both]">
+              <div className="relative mx-auto max-w-sm">
+                <div className="absolute -inset-3 rotate-[2.5deg] rounded-[2.25rem] border border-amber-500/25" />
+                <div className="absolute -inset-2 rounded-[2rem] bg-gradient-to-tr from-amber-500/25 via-transparent to-transparent blur-2xl" />
+                <div className="grain relative overflow-hidden rounded-[1.75rem] ring-1 ring-white/10">
+                  <img
+                    src="/cecep.jpg"
+                    alt="Cecep Abdurrohman Malik Ibrahim"
+                    className="aspect-[4/5] w-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0807] via-transparent to-transparent" />
+                  {/* ON AIR badge — nod to his broadcasting career */}
+                  <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-stone-950/70 px-3 py-1.5 backdrop-blur-sm ring-1 ring-white/10">
+                    <span className="onair-dot h-2 w-2 rounded-full bg-rose-500 shadow-[0_0_8px] shadow-rose-500/70" />
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-200">On Air</span>
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="font-display text-sm italic text-stone-300">
+                      "Suara yang menghubungkan, kepemimpinan yang melayani."
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {["7 Poin Pengembangan", "4 Pilar Program", "Roadmap 12 Bulan"].map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-white/5 px-4 py-1.5 text-xs font-medium text-stone-300 ring-1 ring-white/10"
-              >
-                {tag}
-              </span>
+          {/* Stats strip */}
+          <div className="relative mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02] md:mt-20 md:grid-cols-4">
+            {heroStats.map((s, i) => (
+              <Reveal key={i} delay={i * 80} className="bg-[#0a0807]/40 p-6 text-center">
+                <div className="font-display text-4xl font-semibold text-amber-400 md:text-5xl">{s.value}</div>
+                <div className="mt-2 whitespace-pre-line text-xs leading-snug text-stone-400">{s.label}</div>
+              </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Profil & Kredibilitas ─────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-950 px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          <SectionLabel>Profil Calon</SectionLabel>
-          <SectionHeading>Kredibilitas &amp; Pengalaman</SectionHeading>
-          <SectionSub>
-            Rekam jejak profesional yang relevan dengan kepemimpinan, komunikasi, dan pengorganisasian.
-          </SectionSub>
-
-          {/* About + Contact */}
-          <div className="mt-10 rounded-2xl border border-white/8 bg-stone-900 p-7">
-            <div className="flex flex-wrap gap-4 mb-5 text-sm text-stone-400">
-              <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-amber-400" /> Bandung</span>
-              <a href="https://www.linkedin.com/in/cecepmalik" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-amber-400 transition-colors">
-                <Linkedin className="h-4 w-4 text-amber-400" /> linkedin.com/in/cecepmalik
+        {/* ── STICKY TOC ─────────────────────────────────────────────── */}
+        <nav className="sticky top-16 z-30 border-y border-white/8 bg-[#0a0807]/80 backdrop-blur-xl">
+          <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-6 py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {toc.map((t) => (
+              <a
+                key={t.id}
+                href={`#${t.id}`}
+                onClick={jump(t.id)}
+                className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
+                  active === t.id
+                    ? "bg-amber-500/15 text-amber-400"
+                    : "text-stone-500 hover:text-stone-200"
+                }`}
+              >
+                {t.label}
               </a>
-              <a href="mailto:abdurrahman.cecep16@gmail.com" className="flex items-center gap-1.5 hover:text-amber-400 transition-colors">
-                <Mail className="h-4 w-4 text-amber-400" /> abdurrahman.cecep16@gmail.com
-              </a>
-            </div>
-            <p className="text-sm leading-relaxed text-stone-300">
-              Fast learner dengan passion di bidang sosial dan budaya. Berpengalaman dalam Public Speaking, Radio Broadcasting, dan Event Organizing. Saat ini aktif sebagai guru Bahasa Inggris, Broadcasting, dan Film untuk siswa SD, SMP, dan SMA di sekolah formal dan informal di Bandung.
-            </p>
+            ))}
           </div>
+        </nav>
 
-          {/* Pengalaman Kerja */}
-          <div className="mt-10">
-            <h3 className="mb-5 flex items-center gap-2 text-base font-semibold text-white">
-              <Briefcase className="h-5 w-5 text-amber-400" /> Pengalaman Kerja
-            </h3>
-            <div className="space-y-3">
-              {workExperiences.map((exp, i) => <WorkCard key={i} exp={exp} />)}
-            </div>
-          </div>
+        {/* ── PROFIL & KREDIBILITAS ──────────────────────────────────── */}
+        <section id="profil" className="scroll-mt-32 px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <Eyebrow num="01">Profil Calon</Eyebrow>
+              <SectionTitle className="mt-5 max-w-3xl">
+                Rekam jejak yang <span className="italic text-amber-400">berbicara</span> sendiri.
+              </SectionTitle>
+            </Reveal>
 
-          {/* Pendidikan */}
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {/* Formal */}
-            <div>
-              <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
-                <GraduationCap className="h-5 w-5 text-amber-400" /> Pendidikan Formal
-              </h3>
-              <div className="space-y-3">
-                {formalEducation.map((edu, i) => (
-                  <div key={i} className="rounded-xl border border-white/8 bg-stone-900 p-5">
-                    <p className="font-semibold text-white text-sm">{edu.school}</p>
-                    <p className="text-xs text-amber-400 mt-0.5">{edu.degree}</p>
-                    <p className="text-xs text-stone-500 mt-0.5">{edu.period}</p>
-                    {edu.notes.length > 0 && (
-                      <ul className="mt-3 space-y-1.5">
-                        {edu.notes.map((n, j) => (
-                          <li key={j} className="flex items-start gap-2 text-xs text-stone-400">
-                            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500/60" />
-                            {n}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+            {/* About + contact — editorial lead */}
+            <Reveal delay={80}>
+              <div className="mt-12 grid gap-8 border-t border-white/8 pt-10 md:grid-cols-[0.8fr_1.2fr]">
+                <div className="flex flex-col gap-3 text-sm text-stone-400">
+                  <span className="flex items-center gap-2"><MapPin className="h-4 w-4 text-amber-400" /> Bandung, Indonesia</span>
+                  <a href="https://www.linkedin.com/in/cecepmalik" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 transition-colors hover:text-amber-400">
+                    <Linkedin className="h-4 w-4 text-amber-400" /> linkedin.com/in/cecepmalik
+                  </a>
+                  <a href="mailto:abdurrahman.cecep16@gmail.com" className="flex items-center gap-2 break-all transition-colors hover:text-amber-400">
+                    <Mail className="h-4 w-4 shrink-0 text-amber-400" /> abdurrahman.cecep16@gmail.com
+                  </a>
+                </div>
+                <p className="font-display text-xl font-light leading-relaxed text-stone-200 md:text-2xl">
+                  <span className="float-left mr-3 mt-1 font-display text-6xl font-semibold leading-[0.8] text-amber-400">S</span>
+                  aat ini aktif sebagai jurnalis dan TV presenter di stasiun TVRI Jawa Barat, sekaligus pengajar Bahasa Inggris, Broadcasting, dan Film untuk siswa SD hingga SMA di Bandung. Berpengalaman dalam public speaking, radio broadcasting, dan event organizing.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Experience list */}
+            <div className="mt-16 grid gap-10 lg:grid-cols-[0.34fr_0.66fr]">
+              <Reveal className="lg:sticky lg:top-32 lg:self-start">
+                <h3 className="font-display text-3xl font-medium text-[#f5efe6]">Pengalaman</h3>
+                <p className="mt-3 text-sm leading-relaxed text-stone-500">
+                  Dari studio radio hingga layar televisi, ruang kelas hingga panggung acara — pengalaman yang dibangun di atas komunikasi.
+                </p>
+                <span className="mt-4 inline-flex items-center gap-2 text-xs text-stone-600">
+                  <ChevronDown className="h-3.5 w-3.5" /> Klik tiap entri untuk detail
+                </span>
+              </Reveal>
+              <div>
+                {workExperiences.map((exp, i) => (
+                  <ExperienceRow key={i} exp={exp} index={i} />
                 ))}
               </div>
             </div>
 
-            {/* Informal */}
-            <div>
-              <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
-                <BookOpen className="h-5 w-5 text-amber-400" /> Pendidikan Informal
-              </h3>
-              <div className="space-y-3">
-                {informalEducation.map((edu, i) => (
-                  <div key={i} className="rounded-xl border border-white/8 bg-stone-900 p-5">
-                    <p className="font-semibold text-white text-sm">{edu.school}</p>
-                    <p className="text-xs text-stone-500 mt-0.5">{edu.period}</p>
-                    <p className="mt-2 text-xs leading-relaxed text-stone-400">{edu.desc}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Prestasi */}
-              <h3 className="mb-4 mt-6 flex items-center gap-2 text-base font-semibold text-white">
-                <Trophy className="h-5 w-5 text-amber-400" /> Prestasi
-              </h3>
-              <div className="space-y-2">
-                {achievements.map((a, i) => (
-                  <div key={i} className="flex items-start gap-2.5 rounded-xl border border-amber-500/15 bg-amber-500/5 px-4 py-3">
-                    <Star className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
-                    <p className="text-xs leading-relaxed text-stone-300">{a}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Proyek & Organisasi */}
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <div>
-              <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
-                <FolderOpen className="h-5 w-5 text-amber-400" /> Proyek
-              </h3>
-              <div className="space-y-3">
-                {projects.map((p, i) => (
-                  <div key={i} className="rounded-xl border border-white/8 bg-stone-900 p-5">
-                    <div className="flex items-start gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
-                        <p.icon className="h-4 w-4" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white text-sm">{p.name}</p>
-                        <p className="text-xs text-stone-500 mt-0.5">{p.period}</p>
-                        <p className="mt-2 text-xs leading-relaxed text-stone-400">{p.desc}</p>
-                      </div>
+            {/* Education + Achievements */}
+            <div className="mt-20 grid gap-12 md:grid-cols-2">
+              <Reveal>
+                <h3 className="mb-6 flex items-center gap-2.5 font-display text-2xl font-medium text-[#f5efe6]">
+                  <GraduationCap className="h-5 w-5 text-amber-400" /> Pendidikan
+                </h3>
+                <div className="space-y-4">
+                  {formalEducation.map((edu, i) => (
+                    <div key={i} className="border-l border-amber-500/25 pl-5">
+                      <p className="font-display text-lg text-[#f5efe6]">{edu.school}</p>
+                      <p className="text-sm text-amber-400/90">{edu.degree}</p>
+                      <p className="text-xs text-stone-500">{edu.period}</p>
+                      {edu.notes.length > 0 && (
+                        <ul className="mt-2 space-y-1">
+                          {edu.notes.map((n, j) => (
+                            <li key={j} className="flex items-start gap-2 text-xs text-stone-400">
+                              <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-amber-500/60" /> {n}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  ))}
+                </div>
+                <h4 className="mb-3 mt-8 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">
+                  <BookOpen className="h-4 w-4 text-amber-400" /> Pendidikan Informal
+                </h4>
+                <div className="space-y-3">
+                  {informalEducation.map((edu, i) => (
+                    <div key={i}>
+                      <p className="text-sm font-medium text-stone-200">{edu.school} <span className="font-normal text-stone-600">· {edu.period}</span></p>
+                      <p className="text-xs leading-relaxed text-stone-500">{edu.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
 
-            <div>
-              <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
-                <Network className="h-5 w-5 text-amber-400" /> Organisasi & Kepanitiaan
-              </h3>
-              <div className="space-y-2">
-                {organizations.map((o, i) => (
-                  <div key={i} className="rounded-xl border border-white/8 bg-stone-900 px-5 py-4">
-                    <p className="font-semibold text-white text-sm">{o.name}</p>
-                    <p className="text-xs text-amber-400 mt-0.5">{o.role}</p>
-                    <p className="text-xs text-stone-600 mt-0.5">{o.period}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Skills */}
-              <h3 className="mb-4 mt-6 flex items-center gap-2 text-base font-semibold text-white">
-                <Zap className="h-5 w-5 text-amber-400" /> Skills
-              </h3>
-              <div className="rounded-xl border border-white/8 bg-stone-900 p-5 space-y-4">
-                <div>
-                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Soft Skills</p>
+              <Reveal delay={80}>
+                <h3 className="mb-6 flex items-center gap-2.5 font-display text-2xl font-medium text-[#f5efe6]">
+                  <Trophy className="h-5 w-5 text-amber-400" /> Penghargaan
+                </h3>
+                <div className="space-y-3">
+                  {achievements.map((a, i) => (
+                    <div key={i} className="flex items-start gap-3 rounded-2xl border border-amber-500/15 bg-amber-500/[0.06] p-4">
+                      <Star className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+                      <p className="text-sm leading-relaxed text-stone-200">{a}</p>
+                    </div>
+                  ))}
+                </div>
+                <h4 className="mb-3 mt-8 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">
+                  <Zap className="h-4 w-4 text-amber-400" /> Skills
+                </h4>
+                <div className="space-y-3">
                   <div className="flex flex-wrap gap-2">
-                    {["Public Speaking", "Leadership", "Management", "Negotiating", "Casting Director", "Problem Solving", "Bahasa Inggris (Intermediate)"].map((s) => (
+                    {softSkills.map((s) => (
                       <span key={s} className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300 ring-1 ring-amber-500/20">{s}</span>
                     ))}
                   </div>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Hard Skills</p>
                   <div className="flex flex-wrap gap-2">
-                    {["Microsoft Office", "Adobe Premiere Pro", "Adobe Photoshop", "Audacity", "Canva"].map((s) => (
-                      <span key={s} className="rounded-full bg-stone-800 px-3 py-1 text-xs font-medium text-stone-300 ring-1 ring-white/8">{s}</span>
+                    {hardSkills.map((s) => (
+                      <span key={s} className="rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-stone-300 ring-1 ring-white/10">{s}</span>
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Visi & Misi ───────────────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-950 px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          <SectionLabel>Visi & Misi</SectionLabel>
-          <SectionHeading>Arah yang Jelas,<br />Langkah yang Terukur</SectionHeading>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
-            {/* Visi */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/10 to-amber-800/5 border border-amber-500/20 p-8">
-              <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-amber-500/10 blur-2xl" />
-              <div className="relative">
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-400">
-                  <Star className="h-6 w-6" />
-                </div>
-                <h3 className="mb-4 text-xl font-bold text-white">Visi</h3>
-                <p className="text-base leading-relaxed text-stone-300 italic">
-                  "{visi}"
-                </p>
-              </div>
+              </Reveal>
             </div>
 
-            {/* Misi */}
-            <div className="rounded-3xl border border-white/8 bg-white/3 p-8">
-              <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/8 text-stone-300">
-                <Award className="h-6 w-6" />
-              </div>
-              <h3 className="mb-5 text-xl font-bold text-white">Misi</h3>
-              <ul className="space-y-3">
-                {misi.map((m, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-stone-300">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-xs font-bold text-amber-400">
-                      {i + 1}
-                    </span>
-                    {m}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 7 Poin Pengembangan ───────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-900 px-6 py-20">
-        <div className="mx-auto max-w-4xl">
-          <SectionLabel>Masukan dari Angkatan 2018</SectionLabel>
-          <SectionHeading>7 Poin Pengembangan</SectionHeading>
-          <SectionSub>
-            Pemikiran strategis yang ingin dibawa sebagai bahan diskusi dan pertimbangan bersama.
-          </SectionSub>
-
-          <div className="mt-12 space-y-4">
-            {points.map((point) => (
-              <PointAccordion key={point.number} point={point} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Infrastruktur Dasar ───────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-950 px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          <SectionLabel>Fondasi Organisasi</SectionLabel>
-          <SectionHeading>5 Komponen Infrastruktur Dasar</SectionHeading>
-          <SectionSub>
-            Yang sering dianggap remeh — padahal inilah yang menentukan apakah organisasi bertahan atau vakum lagi.
-          </SectionSub>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {infra.map((item) => (
-              <InfraCard key={item.title} {...item} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4 Pilar Program ───────────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-900 px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          <SectionLabel>Rencana Program Kerja</SectionLabel>
-          <SectionHeading>4 Pilar Program</SectionHeading>
-          <SectionSub>
-            Kerangka program yang seimbang — dari silaturahmi hingga kontribusi sosial.
-          </SectionSub>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            {pillars.map((pillar) => (
-              <PillarCard key={pillar.number} pillar={pillar} />
-            ))}
-          </div>
-
-          {/* Rekomendasi tahun pertama */}
-          <div className="mt-10 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-7">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400">
-                <BookOpen className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="mb-3 font-semibold text-white">
-                  Rekomendasi Program Tahun Pertama
-                </h4>
-                <ul className="space-y-2">
-                  {[
-                    "1 program flagship (reuni akbar) sebagai pembuktian organisasi aktif kembali",
-                    "1–2 program rutin dari Pilar 2 — sharing karier bulanan karena paling berkelanjutan",
-                    "1 program kontribusi dari Pilar 3 (kuliah tamu atau beasiswa skala kecil)",
-                    "Pilar 4 menunggu hingga organisasi lebih stabil",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm text-stone-300">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
-                      {item}
-                    </li>
+            {/* Projects + Organizations */}
+            <div className="mt-20 grid gap-12 md:grid-cols-2">
+              <Reveal>
+                <h3 className="mb-6 flex items-center gap-2.5 font-display text-2xl font-medium text-[#f5efe6]">
+                  <FolderOpen className="h-5 w-5 text-amber-400" /> Proyek
+                </h3>
+                <div className="space-y-4">
+                  {projects.map((p, i) => (
+                    <div key={i} className="flex items-start gap-4 rounded-2xl border border-white/8 bg-white/[0.02] p-5">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
+                        <p.icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="font-display text-base text-[#f5efe6]">{p.name}</p>
+                        <p className="text-xs text-stone-500">{p.period}</p>
+                        <p className="mt-1.5 text-xs leading-relaxed text-stone-400">{p.desc}</p>
+                      </div>
+                    </div>
                   ))}
-                </ul>
-                <p className="mt-4 text-sm text-amber-400/80 italic">
-                  Total 4–5 program di tahun pertama sudah cukup. Lebih dari itu berisiko burnout pengurus.
-                </p>
-              </div>
+                </div>
+              </Reveal>
+
+              <Reveal delay={80}>
+                <h3 className="mb-6 flex items-center gap-2.5 font-display text-2xl font-medium text-[#f5efe6]">
+                  <Network className="h-5 w-5 text-amber-400" /> Organisasi & Kepanitiaan
+                </h3>
+                <div className="space-y-px overflow-hidden rounded-2xl border border-white/8">
+                  {organizations.map((o, i) => (
+                    <div key={i} className="flex items-center justify-between gap-4 bg-white/[0.02] px-5 py-4">
+                      <div>
+                        <p className="text-sm font-medium text-[#f5efe6]">{o.name}</p>
+                        <p className="text-xs text-amber-400/90">{o.role}</p>
+                      </div>
+                      <span className="shrink-0 text-[11px] text-stone-600">{o.period}</span>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Roadmap 12 Bulan ──────────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-950 px-6 py-20">
-        <div className="mx-auto max-w-3xl">
-          <SectionLabel>Timeline</SectionLabel>
-          <SectionHeading>Roadmap 12 Bulan Pertama</SectionHeading>
-          <SectionSub>
-            Milestone yang realistis dan terukur — bukan sekadar daftar program.
-          </SectionSub>
+        {/* ── VISI & MISI ────────────────────────────────────────────── */}
+        <section id="visi" className="scroll-mt-32 border-t border-white/8 px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <Eyebrow num="02">Visi & Misi</Eyebrow>
+            </Reveal>
+            <Reveal delay={60}>
+              <blockquote className="mt-10 max-w-5xl font-display text-3xl font-light leading-[1.25] tracking-tight text-[#f5efe6] md:text-5xl">
+                <span className="text-amber-400">“</span>
+                {visi}
+                <span className="text-amber-400">”</span>
+              </blockquote>
+            </Reveal>
 
-          <div className="mt-12">
-            {roadmap.map((item, i) => (
-              <RoadmapCard key={item.phase} {...item} index={i} />
-            ))}
+            <div className="mt-16 grid gap-x-12 gap-y-5 md:grid-cols-2">
+              {misi.map((m, i) => (
+                <Reveal key={i} delay={i * 50}>
+                  <div className="flex items-start gap-5 border-t border-white/8 pt-5">
+                    <span className="font-display text-2xl font-semibold italic text-amber-500/60">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <p className="text-sm leading-relaxed text-stone-300 md:text-base">{m}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Indikator Keberhasilan ────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-900 px-6 py-20">
-        <div className="mx-auto max-w-4xl">
-          <SectionLabel>Akuntabilitas</SectionLabel>
-          <SectionHeading>Indikator Keberhasilan</SectionHeading>
-          <SectionSub>
-            Setiap program butuh tolok ukur yang nyata — bukan sekadar "berhasil dilaksanakan".
-          </SectionSub>
+        {/* ── GAGASAN (7 POIN) ───────────────────────────────────────── */}
+        <section id="gagasan" className="scroll-mt-32 border-t border-white/8 px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-4xl">
+            <Reveal>
+              <Eyebrow num="03">Masukan dari Angkatan 2018</Eyebrow>
+              <SectionTitle className="mt-5">7 Gagasan Pengembangan</SectionTitle>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-stone-400">
+                Pemikiran strategis yang ingin dibawa sebagai bahan diskusi dan pertimbangan bersama.
+              </p>
+            </Reveal>
+            <div className="mt-12 space-y-3">
+              {points.map((point, i) => (
+                <PointRow key={point.number} point={point} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2">
-            {[
-              {
-                icon: Users,
-                title: "Tingkat Partisipasi",
-                desc: "Jumlah hadir dibandingkan target per kegiatan. Evaluasi per program.",
-              },
-              {
-                icon: Star,
-                title: "Kepuasan Peserta",
-                desc: "Survei singkat pasca-event untuk mengukur kualitas dan relevansi program.",
-              },
-              {
-                icon: TrendingUp,
-                title: "Repeat Participation",
-                desc: "Apakah orang yang sama datang lagi di acara berikutnya — indikator kuat program bermanfaat.",
-              },
-              {
-                icon: Award,
-                title: "Dampak Konkret",
-                desc: "Untuk program mentoring/beasiswa: dampak terukur pada penerima manfaat.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="flex gap-4 rounded-2xl border border-white/8 bg-white/3 p-6"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400">
-                  <item.icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="mb-1.5 font-semibold text-white">{item.title}</h4>
-                  <p className="text-sm leading-relaxed text-stone-400">{item.desc}</p>
+        {/* ── INFRASTRUKTUR ──────────────────────────────────────────── */}
+        <section id="infrastruktur" className="scroll-mt-32 border-t border-white/8 px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <Eyebrow num="04">Fondasi Organisasi</Eyebrow>
+              <SectionTitle className="mt-5 max-w-3xl">5 Komponen Infrastruktur Dasar</SectionTitle>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-stone-400">
+                Yang sering dianggap remeh — padahal inilah yang menentukan apakah organisasi bertahan atau vakum lagi.
+              </p>
+            </Reveal>
+            <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-white/8 sm:grid-cols-2 lg:grid-cols-3">
+              {infra.map((item, i) => (
+                <Reveal key={item.title} delay={i * 50} className="bg-white/[0.02] p-7 transition-colors hover:bg-white/[0.04]">
+                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
+                    <item.icon className="h-5 w-5" />
+                  </div>
+                  <h4 className="font-display text-xl font-medium text-[#f5efe6]">{item.title}</h4>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-400">{item.desc}</p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── PROGRAM (4 PILAR) ──────────────────────────────────────── */}
+        <section id="program" className="scroll-mt-32 border-t border-white/8 px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <Eyebrow num="05">Rencana Program Kerja</Eyebrow>
+              <SectionTitle className="mt-5">4 Pilar Program</SectionTitle>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-stone-400">
+                Kerangka program yang seimbang — dari silaturahmi hingga kontribusi sosial.
+              </p>
+            </Reveal>
+            <div className="mt-12 grid gap-6 sm:grid-cols-2">
+              {pillars.map((pillar, i) => (
+                <PillarCard key={pillar.number} pillar={pillar} index={i} />
+              ))}
+            </div>
+
+            <Reveal delay={120}>
+              <div className="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/[0.05] p-7 md:p-9">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400">
+                    <BookOpen className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-display text-xl font-medium text-[#f5efe6]">Rekomendasi Program Tahun Pertama</h4>
+                    <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+                      {[
+                        "1 program flagship (reuni akbar) sebagai pembuktian organisasi aktif kembali",
+                        "1–2 program rutin dari Pilar 2 — sharing karier bulanan karena paling berkelanjutan",
+                        "1 program kontribusi dari Pilar 3 (kuliah tamu atau beasiswa skala kecil)",
+                        "Pilar 4 menunggu hingga organisasi lebih stabil",
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-start gap-2.5 text-sm text-stone-300">
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" /> {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-5 text-sm italic text-amber-400/80">
+                      Total 4–5 program di tahun pertama sudah cukup. Lebih dari itu berisiko burnout pengurus.
+                    </p>
+                  </div>
                 </div>
               </div>
-            ))}
+            </Reveal>
           </div>
+        </section>
 
-          <p className="mt-8 text-center text-sm text-stone-500">
-            Evaluasi dilakukan per program dan per kuartal — hasilnya dibagikan ke seluruh anggota sebagai bentuk akuntabilitas.
-          </p>
-        </div>
-      </section>
+        {/* ── ROADMAP ────────────────────────────────────────────────── */}
+        <section id="roadmap" className="scroll-mt-32 border-t border-white/8 px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-5xl">
+            <Reveal>
+              <Eyebrow num="06">Timeline</Eyebrow>
+              <SectionTitle className="mt-5">Roadmap 12 Bulan Pertama</SectionTitle>
+            </Reveal>
+            <div className="mt-14 grid gap-6 md:grid-cols-4">
+              {roadmap.map((item, i) => (
+                <Reveal key={item.phase} delay={i * 70}>
+                  <div className="relative h-full rounded-3xl border border-white/8 bg-white/[0.02] p-6">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
+                        <item.icon className="h-5 w-5" />
+                      </div>
+                      <span className="font-display text-3xl font-semibold leading-none text-white/[0.06]">{String(i + 1).padStart(2, "0")}</span>
+                    </div>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-500/90">{item.phase}</span>
+                    <h4 className="mt-1 font-display text-lg font-medium text-[#f5efe6]">{item.title}</h4>
+                    <ul className="mt-4 space-y-2">
+                      {item.tasks.map((t, j) => (
+                        <li key={j} className="flex items-start gap-2 text-xs leading-relaxed text-stone-400">
+                          <ArrowRight className="mt-0.5 h-3 w-3 shrink-0 text-amber-500/60" /> {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
 
-      {/* ── Penutup ───────────────────────────────────────────────────────── */}
-      <section className="border-t border-white/5 bg-stone-950 px-6 py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="relative inline-block mb-8">
-            <div className="pointer-events-none absolute -inset-1 rounded-full bg-amber-500/20 blur-2xl" />
-            <img
-              src="/cecep.jpg"
-              alt="Cecep Abdurrahman Malik Ibrahim"
-              className="relative h-20 w-20 rounded-full object-cover object-top ring-2 ring-amber-500/30 ring-offset-2 ring-offset-stone-950"
-            />
-          </div>
-
-          <blockquote className="mb-8 text-lg leading-relaxed text-stone-300 italic md:text-xl">
-            "Demikian masukan dan gagasan ini. Silakan disesuaikan dengan
-            dinamika diskusi di lapangan. Mari kita bangun AIKU bersama —
-            bukan untuk satu angkatan, tapi untuk semua alumni."
-          </blockquote>
-
-          <div className="inline-block rounded-2xl border border-amber-500/20 bg-amber-500/5 px-8 py-5">
-            <p className="font-bold text-white text-lg">Cecep Abdurrahman Malik Ibrahim</p>
-            <p className="text-sm text-amber-400 mt-1">
-              Calon Ketua AIKU · Ilmu Komunikasi UPI 2018
+            {/* Indikator */}
+            <Reveal>
+              <div className="mt-20">
+                <Eyebrow>Akuntabilitas</Eyebrow>
+                <h3 className="mt-5 font-display text-3xl font-medium text-[#f5efe6] md:text-4xl">Indikator Keberhasilan</h3>
+              </div>
+            </Reveal>
+            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+              {indikator.map((item, i) => (
+                <Reveal key={item.title} delay={i * 50}>
+                  <div className="flex gap-4 rounded-2xl border border-white/8 bg-white/[0.02] p-6">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-display text-lg font-medium text-[#f5efe6]">{item.title}</h4>
+                      <p className="mt-1 text-sm leading-relaxed text-stone-400">{item.desc}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+            <p className="mt-8 text-center text-sm text-stone-600">
+              Evaluasi dilakukan per program dan per kuartal — hasilnya dibagikan ke seluruh anggota sebagai bentuk akuntabilitas.
             </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Footer ────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-white/5 bg-stone-950 px-6 py-6">
-        <p className="text-center text-sm text-stone-600">
-          © 2026 IKOM UPI 2018. All rights reserved.
-        </p>
-      </footer>
+        {/* ── PENUTUP ────────────────────────────────────────────────── */}
+        <section className="relative overflow-hidden border-t border-white/8 px-6 py-24 md:py-32">
+          <div className="relative mx-auto max-w-3xl text-center">
+            <Reveal>
+              <div className="relative mx-auto mb-10 h-24 w-24">
+                <div className="absolute -inset-1 rounded-full bg-amber-500/20 blur-xl" />
+                <img src="/cecep.jpg" alt="Cecep Abdurrohman Malik Ibrahim" className="relative h-24 w-24 rounded-full object-cover object-top ring-1 ring-amber-500/30" />
+              </div>
+              <blockquote className="font-display text-2xl font-light italic leading-relaxed text-[#f5efe6] md:text-4xl md:leading-[1.3]">
+                "Mari kita bangun AIKU bersama — bukan untuk satu angkatan, tapi untuk semua alumni."
+              </blockquote>
+              <div className="mt-10 inline-flex flex-col items-center">
+                <span className="h-px w-12 bg-amber-500/40" />
+                <p className="mt-5 font-display text-xl font-medium text-[#f5efe6]">Cecep Abdurrohman Malik Ibrahim</p>
+                <p className="mt-1 text-sm text-amber-400">Calon Ketua AIKU · Ilmu Komunikasi UPI 2018</p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
 
+        <footer className="border-t border-white/8 px-6 py-7">
+          <p className="text-center text-sm text-stone-600">© 2026 IKOM UPI 2018. All rights reserved.</p>
+        </footer>
+      </div>
+
+      {/* Hero entrance keyframes */}
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
